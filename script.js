@@ -1,6 +1,5 @@
 //DFS algorithm
 function checkRet(arr, x, y, target) {
-  // return x >= 1 && x < arr.length && y >= 1 && y < col && arr[x][y] == target;
   return (
     x >= 0 &&
     x < arr.length &&
