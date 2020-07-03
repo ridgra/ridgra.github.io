@@ -278,9 +278,9 @@ function main() {
       document
         .getElementById(`r${i}c${j}`)
         .addEventListener('contextmenu', () => {
-          if (document.getElementById(`r${i}c${j}`).innerHTML == 'v') {
+          if (document.getElementById(`r${i}c${j}`).innerHTML == '🏳') {
             document.getElementById(`r${i}c${j}`).innerHTML = '';
-          } else document.getElementById(`r${i}c${j}`).innerHTML = '&#127987';
+          } else document.getElementById(`r${i}c${j}`).innerHTML = '🏳';
         });
     }
   }
