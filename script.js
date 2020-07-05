@@ -133,18 +133,20 @@ function setReveal(arr) {
   for (let i = 0; i < arr.length; i++) {
     for (let j = 0; j < arr[i].length; j++) {
       if (arr[i][j] == 'x') {
-        res.push([i, j]);
+        // res.push([i, j]);
+        res.push(`${i}-${j}`);
       }
       //top row
       if (arr[i][j] != 'x' && i == 0) {
         for (let k = -1; k < 2; k++) {
           //mid
           if (arr[i][j - k] == 'x' && k !== 0) {
-            res.push([i, j]);
+            res.push(`${i}-${j}`);
+            // res.push([i, j]);
           }
           //bot
           if (arr[i + 1][j - k] == 'x') {
-            res.push([i, j]);
+            res.push(`${i}-${j}`);
           }
         }
       }
@@ -154,15 +156,15 @@ function setReveal(arr) {
         for (let k = -1; k < 2; k++) {
           //top
           if (arr[i - 1][j - k] == 'x') {
-            res.push([i, j]);
+            res.push(`${i}-${j}`);
           }
           //mid
           if (arr[i][j - k] == 'x' && k !== 0) {
-            res.push([i, j]);
+            res.push(`${i}-${j}`);
           }
           //bot
           if (arr[i + 1][j - k] == 'x') {
-            res.push([i, j]);
+            res.push(`${i}-${j}`);
           }
         }
       }
@@ -172,18 +174,18 @@ function setReveal(arr) {
         for (let k = -1; k < 2; k++) {
           //top
           if (arr[i - 1][j - k] == 'x') {
-            res.push([i, j]);
+            res.push(`${i}-${j}`);
           }
           //mid
           if (arr[i][j - k] == 'x' && k !== 0) {
-            res.push([i, j]);
+            res.push(`${i}-${j}`);
           }
         }
       }
     }
   }
 
-  return res;
+  return [...new Set(res)];
 }
 
 function findEmptySquare(arr, i, j) {
@@ -259,14 +261,24 @@ function main() {
   for (let i = 0; i < row; i++) {
     for (let j = 0; j < col; j++) {
       document.getElementById(`r${i}c${j}`).addEventListener('click', () => {
+        if (document.getElementById(`r${i}c${j}`).innerHTML == '🏳') {
+          return;
+        }
+
         if (board[i][j] == ' ') {
           let sr = setReveal(findEmptySquare(board, i, j));
           for (let k = 0; k < sr.length; k++) {
-            revealEmpty(sr[k][0], sr[k][1], board);
+            // console.log(sr[k].split('-'));
+            revealEmpty(sr[k].split('-')[0], sr[k].split('-')[1], board);
           }
         }
         if (typeof board[i][j] === 'number') {
           revealNumbers(i, j, board);
+        }
+        // console.log(countRevealed);
+
+        if (countRevealed == row * col - bomb) {
+          alert('You won!');
         }
         if (board[i][j] == 'o') {
           endGame(board);
@@ -277,7 +289,16 @@ function main() {
       document
         .getElementById(`r${i}c${j}`)
         .addEventListener('contextmenu', () => {
+          if (
+            document.getElementById(`r${i}c${j}`).innerHTML == '💔' ||
+            document.getElementById(`r${i}c${j}`).style.backgroundColor ==
+              'steelblue'
+          ) {
+            return;
+          }
           if (document.getElementById(`r${i}c${j}`).innerHTML == '🏳') {
+            document.getElementById(`r${i}c${j}`).innerHTML = '?';
+          } else if (document.getElementById(`r${i}c${j}`).innerHTML == '?') {
             document.getElementById(`r${i}c${j}`).innerHTML = '';
           } else document.getElementById(`r${i}c${j}`).innerHTML = '🏳';
         });
@@ -285,4 +306,5 @@ function main() {
   }
 }
 let bombsPos = [];
+let countRevealed = 0;
 main();
